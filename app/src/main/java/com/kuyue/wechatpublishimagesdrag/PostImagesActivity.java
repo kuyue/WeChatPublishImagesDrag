@@ -222,4 +222,10 @@ public class PostImagesActivity extends AppCompatActivity {
         }
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        myHandler.removeCallbacksAndMessages(null);
+    }
+
 }
