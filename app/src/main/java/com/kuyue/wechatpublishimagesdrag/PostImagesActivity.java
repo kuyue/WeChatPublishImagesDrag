@@ -12,6 +12,8 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.View;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.hys.utils.AppUtils;
@@ -46,6 +48,7 @@ public class PostImagesActivity extends AppCompatActivity {
     private ItemTouchHelper itemTouchHelper;
     private RecyclerView rcvImg;
     private TextView tv;//删除区域提示
+    private LinearLayout mLinearLayout;
 
     public static void startPostActivity(Context context, ArrayList<String> images) {
         Intent intent = new Intent(context, PostImagesActivity.class);
@@ -77,6 +80,7 @@ public class PostImagesActivity extends AppCompatActivity {
         rcvImg = (RecyclerView) findViewById(R.id.rcv_img);
         tv = (TextView) findViewById(R.id.tv);
         initRcv();
+        mLinearLayout = (LinearLayout) findViewById(R.id.ll);
     }
 
     private void initRcv() {
@@ -132,6 +136,11 @@ public class PostImagesActivity extends AppCompatActivity {
                 } else {
                     tv.setVisibility(View.GONE);
                 }
+            }
+
+            @Override
+            public void clearView() {
+                refreshLayout();
             }
         });
     }
@@ -216,10 +225,29 @@ public class PostImagesActivity extends AppCompatActivity {
                 switch (msg.what) {
                     case 1:
                         activity.postArticleImgAdapter.notifyDataSetChanged();
+                        activity.refreshLayout();
                         break;
                 }
             }
         }
+    }
+
+    /**
+     * 刷新地理位置等布局
+     */
+    private void refreshLayout() {
+        //判断提醒谁布局看是否需要下移
+        int row = postArticleImgAdapter.getItemCount() / 3;
+        row = 0 == postArticleImgAdapter.getItemCount() % 3 ? row : row + 1;
+        row = 4 == row ? 3 : row;//row最多为三行
+        int marginTop = (getResources().getDimensionPixelSize(R.dimen.article_img_margin_top)
+                + getResources().getDimensionPixelSize(R.dimen.article_img_dimens))
+                * row
+                + getResources().getDimensionPixelSize(R.dimen.article_post_et_h)
+                + 10;
+        RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) mLinearLayout.getLayoutParams();
+        params.setMargins(0, marginTop, 0, 0);
+        mLinearLayout.setLayoutParams(params);
     }
 
     @Override

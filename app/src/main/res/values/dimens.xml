@@ -4,4 +4,5 @@
     <dimen name="article_post_delete">50dp</dimen>
     <dimen name="article_img_margin_top">10dp</dimen>
     <dimen name="article_img_dimens">70dp</dimen>
+    <dimen name="paddingLR">15dp</dimen>
 </resources>

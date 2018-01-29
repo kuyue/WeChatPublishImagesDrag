@@ -88,7 +88,6 @@ public class MyCallBack extends ItemTouchHelper.Callback {
     }
 
     /**
-     *
      * @param viewHolder
      * @param direction
      */
@@ -108,6 +107,9 @@ public class MyCallBack extends ItemTouchHelper.Callback {
         super.clearView(recyclerView, viewHolder);
         adapter.notifyDataSetChanged();
         initData();
+        if (dragListener != null) {
+            dragListener.clearView();
+        }
     }
 
     /**
@@ -203,6 +205,11 @@ public class MyCallBack extends ItemTouchHelper.Callback {
          * @param start
          */
         void dragState(boolean start);
+
+        /**
+         * 当用户与item的交互结束并且item也完成了动画时调用
+         */
+        void clearView();
     }
 
     private DragListener dragListener;
